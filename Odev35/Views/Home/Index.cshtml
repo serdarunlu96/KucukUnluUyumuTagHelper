@@ -1,0 +1,51 @@
+﻿@page
+@model YourProjectNamespace.Controllers.HomeController
+
+<h1>Küçük Ünlü Uyumunu Kontrol Et</h1>
+
+<form method="post">
+    <div class="form-group">
+        <label for="kelime">Kelime:</label>
+        <input type="text" id="kelime" name="kelime" class="form-control" />
+    </div>
+    <button type="button" class="btn btn-primary" id="hesaplaBtn">Hesapla</button>
+</form>
+
+<div kelime="örnek" unlu-uyumu>
+</div>
+
+<div id="sonucDiv">
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+    document.getElementById("hesaplaBtn").addEventListener("click", function () {
+        var kelime = document.getElementById("kelime").value;
+
+        if (kelime.trim() === "") {
+            alert("Kelime giriniz.");
+            return;
+        }
+
+        $.ajax({
+            type: "POST",
+            url: "/Home/UnluUyumuKontrolu",
+            data: { kelime: kelime },
+            success: function (data) {
+                var mesaj = data ? "Küçük ünlü uyumuna uyar." : "Küçük ünlü uyumuna uymaz.";
+                var renk = data ? "green" : "red";
+
+                var sonucDiv = document.getElementById("sonucDiv");
+                sonucDiv.innerHTML = "<p style='color: " + renk + ";'>" + mesaj + "</p>";
+            }
+        });
+    });
+
+    // Wikipedia linkini yeni sekmede açan fonksiyon
+    function openWikipedia() {
+        window.open("https://tr.wikipedia.org/wiki/K%C3%BC%C3%A7%C3%BCk_%C3%BCnl%C3%BC_uyumu#K%C3%BC%C3%A7%C3%BCk_%C3%9Cnl%C3%BC_Uyumuna_Uymayan_S%C3%B6zc%C3%BCkler", "_blank");
+    }
+</script>
+
+<a href="#" onclick="openWikipedia();">Wikipedia</a>
